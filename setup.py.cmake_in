@@ -1,0 +1,30 @@
+import os
+from os.path import join, normpath
+from glob import glob
+from setuptools import setup
+from torch.utils.cpp_extension import BuildExtension
+
+cmake_src_dir=normpath("${CMAKE_CURRENT_SOURCE_DIR}")
+cmake_install_prefix=normpath("${CMAKE_INSTALL_PREFIX}")
+
+setup(
+    name='sample_cv_v1',
+    version='1.0',
+    author="Markus Hofinger",
+    author_email="markus.hofinger@icg.tugraz.at",
+
+    description='A Pytorch operator that makes a cost volume using a sampling offset',
+    include_dirs=["src/include"],
+
+    # Requirements
+    python_requires=">=3, <4",
+    packages=["sample_cv_op"],
+    package_dir={"sample_cv_op":   join(cmake_src_dir, "sample_cv_op"),},
+    data_files=[
+                ("sample_cv_op/include", glob(join(cmake_install_prefix, "include", "*"))),
+                ("sample_cv_op", glob(join(cmake_install_prefix, "lib", "*"))),
+                ("sample_cv_op", glob(join(cmake_install_prefix, "bin", "*")))
+               ],
+    cmdclass={"build_ext": BuildExtension.with_options(no_python_abi_suffix=True)},
+)
+

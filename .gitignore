@@ -1,0 +1,6 @@
+build*/
+install/
+sample_cv_v1.egg-info
+*/__pycache__/
+dist/*
+tests/cv_sample_testdata.npz
